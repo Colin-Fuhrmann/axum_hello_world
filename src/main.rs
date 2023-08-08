@@ -3,11 +3,12 @@ use axum::{
     Router
 };
 
+use axum_hello_world::run_server;
 
-mod server;
+
 
 #[tokio::main]
 async fn main() {
-
-    server::run_server().await
+    
+    run_server().await
 }

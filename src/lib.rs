@@ -1,7 +1,7 @@
-
-use crate::server::routes::create_routes;
+use crate::routes::create_routes;
 
 mod routes;
+
 
 pub async fn run_server() {
 
@@ -14,3 +14,5 @@ pub async fn run_server() {
         .await
         .unwrap();
 } 
+
+

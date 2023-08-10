@@ -1,4 +1,4 @@
-use axum::{Router, body::Body, routing::{get, post}, http::Method, Extension};
+use axum::{Router, body::Body, routing::{get, post}, http::Method, Extension, middleware};
 use tower_http::cors:: {Any, CorsLayer};
 
 use hello_world::hello_world;
@@ -14,6 +14,8 @@ use mirror_user_agent::mirror_user_agent;
 use mirror_custom_header::mirror_custom_header;
 
 use middleware_message::middleware_message;
+use read_middleware_custom_header::read_middleware_custom_header;
+use set_middleware_custom_header::set_middleware_custom_header;
 
 
 mod hello_world;
@@ -25,6 +27,8 @@ mod query_params;
 mod mirror_user_agent;
 mod mirror_custom_header;
 mod middleware_message;
+mod read_middleware_custom_header;
+mod set_middleware_custom_header;
 
 
 
@@ -45,6 +49,8 @@ pub fn create_routes() -> Router<() ,Body> {
 
 
     return Router::new()
+        .route("/read_middleware_custom_header", get(read_middleware_custom_header))
+        .route_layer(middleware::from_fn(set_middleware_custom_header))
         .route("/hello_world",get(hello_world))
         .route("/mirror_body_string", post(mirror_body_string))
         .route("/mirror_body_json", post(mirror_body_json))
@@ -54,7 +60,6 @@ pub fn create_routes() -> Router<() ,Body> {
         .route("/mirror_user_agent", get(mirror_user_agent))
         .route("/mirror_custom_header", get(mirror_custom_header))
         .route("/middleware_message", get(middleware_message))
-        .layer(cors)
         .layer(Extension(shared_data))
-
+        .layer(cors)
 }

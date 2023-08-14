@@ -17,6 +17,9 @@ use middleware_message::middleware_message;
 use read_middleware_custom_header::read_middleware_custom_header;
 use set_middleware_custom_header::set_middleware_custom_header;
 
+use always_errors::always_errors;
+use returns_201::returns_201;
+
 
 mod hello_world;
 mod mirror_body_string;
@@ -29,6 +32,8 @@ mod mirror_custom_header;
 mod middleware_message;
 mod read_middleware_custom_header;
 mod set_middleware_custom_header;
+mod always_errors;
+mod returns_201;
 
 
 
@@ -62,4 +67,6 @@ pub fn create_routes() -> Router<() ,Body> {
         .route("/middleware_message", get(middleware_message))
         .layer(Extension(shared_data))
         .layer(cors)
+        .route("/always_errors", get(always_errors))
+        .route("/returns_201", post(returns_201))
 }

@@ -1,6 +1,24 @@
 use axum::{Router, body::Body, routing::{get, post}, http::Method, Extension, middleware};
 use tower_http::cors:: {Any, CorsLayer};
 
+
+mod hello_world;
+mod mirror_body_string;
+mod mirror_body_json;
+mod path_variables;
+mod hard_coded_path;
+mod query_params;
+mod mirror_user_agent;
+mod mirror_custom_header;
+mod middleware_message;
+mod read_middleware_custom_header;
+mod set_middleware_custom_header;
+mod always_errors;
+mod returns_201;
+mod get_json;
+mod validate_data;
+
+
 use hello_world::hello_world;
 
 use mirror_body_string::mirror_body_string;
@@ -20,20 +38,9 @@ use set_middleware_custom_header::set_middleware_custom_header;
 use always_errors::always_errors;
 use returns_201::returns_201;
 
+use get_json::get_json;
+use validate_data::validate_data;
 
-mod hello_world;
-mod mirror_body_string;
-mod mirror_body_json;
-mod path_variables;
-mod hard_coded_path;
-mod query_params;
-mod mirror_user_agent;
-mod mirror_custom_header;
-mod middleware_message;
-mod read_middleware_custom_header;
-mod set_middleware_custom_header;
-mod always_errors;
-mod returns_201;
 
 
 
@@ -69,4 +76,6 @@ pub fn create_routes() -> Router<() ,Body> {
         .layer(cors)
         .route("/always_errors", get(always_errors))
         .route("/returns_201", post(returns_201))
+        .route("/get_json", get(get_json))
+        .route("/validate_data", post(validate_data))
 }
